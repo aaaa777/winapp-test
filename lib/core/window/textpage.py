@@ -3,7 +3,7 @@ from .basepage import BasePage
 
 class TextPage(BasePage):
     
-    def __init__(self, title="Text Page", header="", text="sample text"):
+    def __init__(self, title="Text Page", header=None, text="sample text"):
         super().__init__()
         self.title = title
         self.header = header
@@ -20,6 +20,3 @@ class TextPage(BasePage):
         return [
             sg.Column(rows, scrollable=True, vertical_scroll_only=True, size=(380, 140), pad=(0, 0)),
         ]
-    
-    def export(self):
-        return [self.title, self.layout]

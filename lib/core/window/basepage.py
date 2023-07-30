@@ -5,5 +5,10 @@ class BasePage:
     def __init__(self):
         self.title = "Base Page"
 
+    def layout(self):
+        return [
+            [sg.Text('this is Base Page')],
+        ]
+
     def export(self):
-        return [self.title, lambda: [sg.Text('this is Base Page')]]
+        return [self.title, self.layout]

@@ -33,6 +33,3 @@ class MainPage(BasePage):
                 ],
             ], scrollable=True, vertical_scroll_only=True, size=(380, 140), pad=(0, 0)),
         ]
-    
-    def export(self):
-        return [self.title, self.layout]
