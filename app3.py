@@ -4,8 +4,13 @@ from lib.core.window.manager import WindowManager
 from lib.core.utils import FileResolver
 
 import sys
+from tendo import singleton
 
 def main():
+    try:
+        me = singleton.SingleInstance()
+    except:
+        sys.exit(0)
 
     wm = WindowManager()
 

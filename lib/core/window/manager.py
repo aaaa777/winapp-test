@@ -8,7 +8,7 @@ class WindowManager:
         self.buttons_map = {}
         #self.title = title
         #self.layout = layout
-        #self.window = sg.Window(self.title, self.layout)
+        self.window = None
         self.thread = threading.Thread(target=self.start)
         self.layouts = [
             lambda: ["全般", [sg.Text('正常に起動しました。')]],
@@ -19,6 +19,10 @@ class WindowManager:
 
     def start(self, stop_callback=None):
 
+        if self.window is not None:
+            self.window.bring_to_front()
+            return
+
         sg.theme('Default1')
 
         layout = [
@@ -27,26 +31,26 @@ class WindowManager:
             [sg.Button(key="OK", button_text="OK"), sg.Button(key="Cancel", button_text="キャンセル"), sg.Button(key='Shutdown', button_text="アプリを終了")]
         ]
 
-        window = sg.Window('Window Title', layout)
+        self.window = sg.Window('Window Title', layout)
 
         layout_number = 0
         while True:
-            event, values = window.read()
+            event, values = self.window.read()
             print(event, values)
             if event in [str(i) for i in range(len(self.layouts))]:
-                window[f'-COL{layout_number}-'].update(visible=False)
-                window[f'-COL{event}-'].update(visible=True)
+                self.window[f'-COL{layout_number}-'].update(visible=False)
+                self.window[f'-COL{event}-'].update(visible=True)
                 layout_number = int(event)
 
             if event == sg.WIN_CLOSED or event == 'Cancel':
                 break
 
             if event == 'Shutdown':
-                window.close()
                 stop_callback()
                 break
         
-        window.close()
+        self.window.close()
+        self.window = None
 
     def open(self, window):
         self.windows.append(window)

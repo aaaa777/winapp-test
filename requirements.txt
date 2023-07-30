@@ -3,3 +3,4 @@ pysimplegui==4.60.5
 pywin32==306
 pystray==0.19.4
 pillow==10.0.0
+tendo==0.3.0
