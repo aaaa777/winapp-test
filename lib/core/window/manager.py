@@ -11,21 +11,20 @@ class WindowManager:
         #self.window = sg.Window(self.title, self.layout)
         self.thread = threading.Thread(target=self.start)
         self.layouts = [
-            lambda: [sg.Text('test layout 1')],
-            lambda: [sg.Text('test layout 2')],
-            lambda: [sg.Text('test layout 3')],
-            lambda: [sg.Text('test rwest 4')]
+            lambda: ["全般", [sg.Text('正常に起動しました。')]],
+            lambda: ["認証", [sg.Text('認証済みです。')]],
+            lambda: ["バージョン情報", [sg.Text('simple exe version 1.0.0')]],
+            lambda: ["クレジット", [sg.Text('made by sawai')]]
         ]
 
     def start(self, stop_callback=None):
 
-        sg.theme('DarkAmber')
+        sg.theme('Default1')
 
         layout = [
-            [sg.Text('My one-shot window.')],
-            [sg.Button(f'{i}') for i in range(len(self.layouts))],
-            [sg.Column([layout()], key=f'-COL{i}-', visible=(i==0)) for i, layout in enumerate(self.layouts)],
-            [sg.Submit(), sg.Cancel(), sg.Button('Shutdown')]
+            [sg.Button(button_text=f"{layout()[0]}", key=f'{i}') for i, layout in enumerate(self.layouts)],
+            [sg.Column([layout()[1]], key=f'-COL{i}-', visible=(i==0)) for i, layout in enumerate(self.layouts)],
+            [sg.Button(key="OK", button_text="OK"), sg.Button(key="Cancel", button_text="キャンセル"), sg.Button(key='Shutdown', button_text="アプリを終了")]
         ]
 
         window = sg.Window('Window Title', layout)
