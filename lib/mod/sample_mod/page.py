@@ -1,6 +1,6 @@
 
 from PySimpleGUI import PySimpleGUI as sg
-from lib.core.window.base import BaseWindow
+from lib.core.window.basepage import BaseWindow
 
 class SampleModWindow(BaseWindow):
 

@@ -12,11 +12,16 @@ class TaskTray:
         self.description = description
         self.default_item = default_item
         self.icon = None
+        self.thread = None
 
-        # タスクトレイ常駐はスレッド化
-        self.thread = threading.Thread(target=self.create)
 
-    def create(self):
+    # タスクトレイのスレッド化
+    def start(self):
+        self.thread = threading.Thread(target=self.start_thread)
+        self.thread.start()
+        return self.thread
+
+    def start_thread(self):
         try:
             item=[]
 
@@ -40,8 +45,6 @@ class TaskTray:
         finally:
             self.stop()
 
-    def start(self):
-        self.thread.start()
         
     def stop(self):
         if self.icon != 0:
