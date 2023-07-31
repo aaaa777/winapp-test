@@ -2,33 +2,27 @@ import PySimpleGUI as sg
 import threading
 
 from ..utils import Consts
+from ..service import BaseService
 
 # 管理ウィンドウの管理クラス
-class WindowManager:
+class WindowManager(BaseService):
 
     # ウィンドウ初期化
-    def __init__(self, stop_callback=None):
-        self.buttons_map = {}
-        #self.title = title
-        #self.layout = layout
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.window = None
-        self.thread = None
-        self.layouts = [
-            # ["全般", lambda: [sg.Text('正常に起動しました。')]],
-            # ["認証", lambda: [sg.Text('認証済みです。')]],
-            # ["バージョン情報", lambda: [sg.Text('simple exe version 1.0.0')]],
-            # ["クレジット", lambda: [sg.Text('made by sawai')]]
-        ]
-        self.stop_callback = stop_callback
+        self.layouts = []
 
-    # ウィンドウ起動
-    def start(self):
-        self.thread = threading.Thread(target=self.create_window)
-        self.thread.start()
-        return self.thread
+    # バックグラウンド無効化
+    def run(self):
+        pass
 
     # ウィンドウ起動
     def create_window(self):
+        return threading.Thread(target=self.create_window_thread).start()
+
+    # Thread用ウィンドウ起動
+    def create_window_thread(self):
 
         # ウィンドウが既に起動している場合は起動せず、既存のウィンドウを前面に表示する
         if self.window is not None:
@@ -86,8 +80,13 @@ class WindowManager:
                     break
                 continue
 
+            # OKボタンが押された場合はOKを表示
             if event == 'OK':
                 print('OK')
+
+            # ウィンドウを閉じるかキャンセルボタンが押された場合はループを抜ける
+            if event == sg.WIN_CLOSED or event == 'Cancel':
+                break
 
             # レイアウト切り替えイベント
             if event in [str(i) for i in range(len(self.layouts))]:
@@ -125,14 +124,11 @@ class WindowManager:
                 self.window[f'{header_number*4+2}'].update(visible=True)
                 self.window[f'{header_number*4+3}'].update(visible=True)
                 self.window[f'-COL-NEXT{header_number}-'].update(visible=True)
-                
-            # ウィンドウを閉じるかキャンセルボタンが押された場合はループを抜ける
-            if event == sg.WIN_CLOSED or event == 'Cancel':
-                break
 
             # 終了ボタンが押された時はタスクトレイのプロセスも終了してループを抜ける
             if event == 'Shutdown':
-                self.stop_callback()
+                if self.stop_callback is not None:
+                    self.stop_callback()
                 break
         
         # ウィンドウを閉じる

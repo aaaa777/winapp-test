@@ -1,26 +1,22 @@
 import threading
 from pystray import Icon,Menu,MenuItem
 from PIL import Image
+from ..service import BaseService
 
-class TaskTray:
+class TaskTray(BaseService):
 
-    def __init__(self, icon_path, menu_options={}, title="", description="", default_item=None):
+    def __init__(self, icon_path, menu_options={}, title="", description="", default_item=None, **kwargs):
+        super().__init__(**kwargs)
         self.icon_path = icon_path
         self.menu_options = menu_options
         self.title = title
         self.description = description
         self.default_item = default_item
         self.icon = None
-        self.thread = None
 
 
     # タスクトレイのスレッド化
-    def start(self):
-        self.thread = threading.Thread(target=self.start_thread)
-        self.thread.start()
-        return self.thread
-
-    def start_thread(self):
+    def run_thread(self):
         try:
             item=[]
 
@@ -48,6 +44,3 @@ class TaskTray:
     def stop(self):
         if self.icon != 0:
             self.icon.stop()
-
-    def wait(self):
-        self.thread.join()

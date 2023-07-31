@@ -1,10 +1,6 @@
-
-from lib.core.tasktray import TaskTray
-from lib.core.window.window_manager import WindowManager
+from lib.core.services import WindowManager, ServiceManager, TaskTray
 from lib.core.utils import FileResolver, Consts
-from lib.core.services import ServiceManager
-from lib.core.page import MainPage
-from lib.core.page import TextPage
+from lib.core.page import MainPage, TextPage
 
 import sys
 from tendo import singleton
@@ -55,7 +51,7 @@ def main():
     # WindowManagerの終了処理にThreadManagerの終了処理を追加
 
     tt.menu_options={
-        '設定': lambda: wm.create_window(),
+        '設定': lambda: wm.create_window_thread(),
         '終了': sm.stop
     }
 
@@ -63,7 +59,7 @@ def main():
     sm.add_stop_callback(tt.stop)
     sm.add_stop_callback(wm.stop)
 
-    sm.add_thread(tt.start())
+    sm.add_thread(tt.run())
     sm.run()
 
 if __name__ == '__main__':
