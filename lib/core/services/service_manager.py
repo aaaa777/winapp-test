@@ -1,17 +1,18 @@
 import threading
 
-from ..service import BaseService
+from ..service import BackgroundService
 
-class ServiceManager(BaseService):
+class ServiceManager(BackgroundService):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.threads = []
-        self.stop_callbacks = []
+        self.services = []
 
     # サービスを追加
     def add_service(self, service=None):
         if service is None:
             return
+        self.services.append(service)
         self.add_thread(service.thread)
         self.add_stop_callback(service.stop)
 
@@ -25,5 +26,11 @@ class ServiceManager(BaseService):
     # ServiceManagerをThreadで起動するメソッド
     # self.threadsに追加されたスレッドが全て終了すると、run()が終了する
     def run_thread(self):
-        for thread in self.threads:
+        threads = [threading.Thread(target=service.run) for service in self.services]
+        for thread in threads:
+            thread.start()
+
+        # バックグラウンドのサービスが全て終了するまで待機
+        for thread in threads:
+            print(thread)
             thread.join()

@@ -1,9 +1,9 @@
 import threading
 from pystray import Icon,Menu,MenuItem
 from PIL import Image
-from ..service import BaseService
+from ..service import BackgroundService
 
-class TaskTray(BaseService):
+class TaskTray(BackgroundService):
 
     def __init__(self, icon_path, menu_options={}, title="", description="", default_item=None, **kwargs):
         super().__init__(**kwargs)

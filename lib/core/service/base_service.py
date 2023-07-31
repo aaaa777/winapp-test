@@ -1,15 +1,11 @@
 import threading
 
 class BaseService:
-    def __init__(self, disable_thread=False, stop_callback=None):
-
-        if disable_thread:
-            self.thread = None
-        else:
-            self.thread = threading.Thread(target=self.run_thread)
+    def __init__(self, stop_callback=None):
         
         self.stop_callback = stop_callback
         self.stop_callbacks = []
+        self.thread = threading.Thread(target=self.run_thread)
 
     # サービス終了時に呼び出すコールバックを追加
     def add_stop_callback(self, stop_callback=None):

@@ -2,20 +2,16 @@ import PySimpleGUI as sg
 import threading
 
 from ..utils import Consts
-from ..service import BaseService
+from ..service import FunctionService
 
 # 管理ウィンドウの管理クラス
-class WindowManager(BaseService):
+class WindowManager(FunctionService):
 
     # ウィンドウ初期化
-    def __init__(self, **kwargs):
+    def __init__(self, pages=[], **kwargs):
         super().__init__(**kwargs)
         self.window = None
-        self.layouts = []
-
-    # バックグラウンド無効化
-    def run(self):
-        pass
+        self.layouts = [page.export() for page in pages]
 
     # ウィンドウ起動
     def create_window(self):
@@ -30,9 +26,9 @@ class WindowManager(BaseService):
             return
         self.window_refresh = False
 
-        window_width = Consts.window_width
+        window_width  = Consts.window_width
         window_height = Consts.window_height
-        image_data = Consts.px_image_data
+        image_data    = Consts.px_image_data
 
         # テーマの設定
         sg.theme('SystemDefaultForReal')
@@ -54,7 +50,6 @@ class WindowManager(BaseService):
         
         del header_layouts[-1]
 
-        print(header_layouts)
         window_layout = [
             # [sg.Column([[sg.Button(button_text=f"{layout[0]}", key=f'{i}', image_data=image_data, image_size=(80, 15)) for i, layout in enumerate(self.layouts)]], key="COL-topbar", scrollable=False, size=(window_width + 20, None), pad=(0, 0))],
             [sg.Column([header_layouts], key="COL-topbar", scrollable=False, size=(window_width, 20), pad=(0, 0))],
