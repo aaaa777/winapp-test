@@ -16,6 +16,7 @@ def main():
 
 
     # ServiceManagerの初期化
+    # どのサービスよりも最初に初期化すること
     sm = ServiceManager()
 
 
@@ -23,7 +24,7 @@ def main():
     wm = WindowManager(
         window_height=Consts.window_height,
         window_width=Consts.window_width,
-        
+
         # WindowManagerの終了処理にServiceManagerの終了処理を追加
         stop_host_process=sm.stop,
     
@@ -67,11 +68,6 @@ def main():
         },
         default_item="設定",
     )
-
-    # 停止処理をServiceManagerに登録
-    sm.add_service(wm)
-    sm.add_service(tt)
-    sm.add_service(uc)
 
     # ServiceManagerを起動、ブロッキング
     sm.run()

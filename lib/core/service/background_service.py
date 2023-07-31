@@ -1,6 +1,6 @@
-from .base_service import BaseService
+from .managed_service import ManagedService
 
-class BackgroundService(BaseService):
+class BackgroundService(ManagedService):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

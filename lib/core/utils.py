@@ -21,6 +21,11 @@ class FileResolver:
             extDataDir = os.path.join(extDataDir, path) 
         return extDataDir
     
+    @staticmethod
+    def resolve_mod_path(path):
+        pass
+        
+    
 # バージョンを管理、比較するクラス
 class Version:
     def __init__(self, major, minor, patch):
