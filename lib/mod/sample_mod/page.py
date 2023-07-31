@@ -1,8 +1,7 @@
-
 from PySimpleGUI import PySimpleGUI as sg
-from lib.core.window.page.base_page import BaseWindow
+from lib.core.page import BasePage
 
-class SampleModWindow(BaseWindow):
+class SampleModPage(BasePage):
 
     layout = [
         [sg.Text('Sample Mod Window')],
