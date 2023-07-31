@@ -1,6 +1,7 @@
 from lib.core.services import WindowManager, ServiceManager, TaskTray, UpdateChecker
 from lib.core.utils import FileResolver, Consts
 from lib.core.page import MainPage, TextPage
+from lib.core.version import AppVersion
 
 import sys
 from tendo import singleton
@@ -40,12 +41,12 @@ def main():
             TextPage("全般", None, "正常に起動しました。"),
             TextPage("認証", None, "認証済みです。"),
             MainPage("メイン"),
-            TextPage("バージョン", "バージョン情報", "0.0.3 (2023/07/31)"),
-            TextPage("バージョン", "バージョン情報", "0.0.3 (2023/07/31)"),
-            TextPage("バージョン", "バージョン情報", "0.0.3 (2023/07/31)"),
+            TextPage("バージョン", "バージョン情報", AppVersion.version.get_version_string()),
+            TextPage("バージョン", "バージョン情報", AppVersion.version.get_version_string()),
+            TextPage("バージョン", "バージョン情報", AppVersion.version.get_version_string()),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-            TextPage("バージョン", "バージョン情報", "0.0.3 (2023/07/31)"),
+            TextPage("バージョン", "バージョン情報", f"バージョン: {AppVersion.version.get_version_string()}"),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
