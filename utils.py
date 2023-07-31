@@ -8,7 +8,11 @@ def setup():
     os.system(f"{os.getcwd()}/env/Scripts/pip install -r requirements.txt")
 
 def build(target, options=""):
-    os.system(f"""{os.getcwd()}/env/Scripts/pyinstaller {target} --add-data "res/app.ico;./res/" --add-data "lib/*;./lib/" --clean {options} --noconfirm""")
+    os.system(f"""{os.getcwd()}/env/Scripts/pyinstaller {target} --icon "res/tficon2.ico" --add-data "res/*;./res/" --add-data "lib/*;./lib/" --clean {options} --noconfirm""")
+
+def sign(target):
+    os.system(f"""openssl pkcs12 -export -inkey cert/code.key -in cert/code.crt -out code.pfx""" )
+    os.system(f"""signtool sign /f cert/code.pfx /t http://timestamp.digicert.com /fd SHA256 /p exampleexampleexample dist/app3.exe""" )
 
 def run(target):
     os.system(f"""{os.getcwd()}/env/Scripts/python {target} """)

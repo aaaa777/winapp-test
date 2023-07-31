@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from .basepage import BasePage
+from .base_page import BasePage
 
 class MainPage(BasePage):
     

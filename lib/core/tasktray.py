@@ -1,4 +1,3 @@
-
 import threading
 from pystray import Icon,Menu,MenuItem
 from PIL import Image
