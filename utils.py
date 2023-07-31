@@ -48,6 +48,9 @@ class AppVersion(Version):
     os.system(f"""git push""")
     os.system(f"""git tag -a v{new_version_major}.{new_version_minor}.{new_version_patch} -m "version up v{new_version_major}.{new_version_minor}.{new_version_patch}" """)
     os.system(f"""git push --tags""")
+
+    build("app3.py", "--onefile --noconsole")
+    print("!!! automated section end, sign with signtool.exe and upload manually !!!")
         
 def patch_up():
     version_up(0, 0, 1)
