@@ -20,6 +20,13 @@ def main():
     sm = ServiceManager()
 
 
+    # UpdateCheckerの初期化
+    uc = UpdateChecker(
+        version_url="http://www.example.com/",
+        update_message="アップデートがあります。",
+    )
+
+
     # WindowManagerの初期化
     wm = WindowManager(
         window_height=Consts.window_height,
@@ -41,15 +48,8 @@ def main():
             TextPage("バージョン", "バージョン情報", "0.0.3 (2023/07/31)"),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
             TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-            # TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
+            TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
         ],
-    )
-
-    
-    # UpdateCheckerの初期化
-    uc = UpdateChecker(
-        version_url="http://www.example.com/",
-        update_message="アップデートがあります。",
     )
 
 

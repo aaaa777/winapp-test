@@ -7,3 +7,4 @@ tendo==0.3.0
 pytz==2023.3
 requests==2.31.0
 win11toast==0.32
+win10toast==0.9

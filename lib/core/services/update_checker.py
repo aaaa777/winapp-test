@@ -3,6 +3,7 @@ import requests
 import pytz
 import threading
 from win11toast import toast
+from win10toast import ToastNotifier
 
 from ..service import BackgroundService
 from ..utils import Version, Consts
@@ -28,7 +29,8 @@ class UpdateChecker(BackgroundService):
     # アップデートがあるかどうかを手動でチェックして、結果を通知する
     def check_update_notification(self):
         pass
-        toast("アップデートはありませんでした")
+        res = toast("アップデートはありませんでした")
+        print("toast message", res)
 
     def check_version(self):
         res = requests.get(self.version_url)

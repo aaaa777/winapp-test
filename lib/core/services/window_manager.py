@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import threading
+import win32gui
 
 from ..service import FunctionService
 
@@ -28,7 +29,11 @@ class WindowManager(FunctionService):
         # ウィンドウが既に起動している場合は起動せず、既存のウィンドウを前面に表示する
         if self.window is not None:
             self.window.bring_to_front()
+            win32gui.SetForegroundWindow(self.window.TKroot.winfo_id())
             return
+            # while self.window is not None:
+            #     self.window_refresh = True
+        
         self.window_refresh = False
 
         window_width  = self.window_width
@@ -59,11 +64,11 @@ class WindowManager(FunctionService):
             # [sg.Column([[sg.Button(button_text=f"{layout[0]}", key=f'{i}', image_data=image_data, image_size=(80, 15)) for i, layout in enumerate(self.layouts)]], key="COL-topbar", scrollable=False, size=(window_width + 20, None), pad=(0, 0))],
             [sg.Column([header_layouts], key="COL-topbar", scrollable=False, size=(window_width, 20), pad=(0, 0))],
             [sg.Column((print(layout) is True) or [layout[1]()], key=f'-COL{i}-', visible=(i==0), size=(window_width, 150), pad=(0, 0)) for i, layout in enumerate(self.layouts)],
-            [sg.Button(key="OK", button_text="OK"), sg.Button(key="Cancel", button_text="閉じる"), sg.Button(key='Shutdown', button_text="終了")]
+            [sg.Push(), sg.Button(key="OK", button_text="OK", pad=(2,2)), sg.Button(key="Cancel", button_text="閉じる", pad=(2,2)), sg.Button(key='Shutdown', button_text="終了", pad=(2,2))]
         ]
 
         # ウィンドウを作成
-        self.window = sg.Window('Window Title', window_layout, size=(window_width, window_height), margins=(0,0))
+        self.window = sg.Window('Window Title', window_layout, size=(window_width, window_height), margins=(0,0), finalize=True)
 
         # self.window["COL-topbar"].Widget.vscrollbar.pack_forget()
 
