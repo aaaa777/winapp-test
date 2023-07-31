@@ -47,8 +47,9 @@ class WindowManager(FunctionService):
         sg.set_options(element_padding=(0, 0))
 
         # ヘッダーの列数調整
-        for i in range(4-(len(self.layouts)%4)):
-            self.layouts.append([None, lambda: []])
+        if len(self.layouts) % 4 != 0:
+            for i in range(4-(len(self.layouts)%4)):
+                self.layouts.append([None, lambda: []])
 
         # ヘッダーに⇔ボタンを追加
         header_layouts = [sg.Button(key=f"-COL-PREV0-", button_text="←", image_data=image_data, image_size=(25, 15), pad=(0, 0), disabled=True)]
