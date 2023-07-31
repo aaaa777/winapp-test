@@ -1,17 +1,22 @@
 import PySimpleGUI as sg
 import threading
 
-from ..utils import Consts
 from ..service import FunctionService
 
 # 管理ウィンドウの管理クラス
 class WindowManager(FunctionService):
 
     # ウィンドウ初期化
-    def __init__(self, pages=[], **kwargs):
+    def __init__(self, pages=[], window_width=400, window_height=200, **kwargs):
         super().__init__(**kwargs)
-        self.window = None
+        self.window_width = window_width
+        self.window_height = window_height
         self.layouts = [page.export() for page in pages]
+
+        self.window = None
+        self.window_refresh = False
+        
+        self.px_image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc````\x00\x00\x00\x05\x00\x01\xa5\xf6E@\x00\x00\x00\x00IEND\xaeB`\x82'
 
     # ウィンドウ起動
     def create_window(self):
@@ -26,9 +31,9 @@ class WindowManager(FunctionService):
             return
         self.window_refresh = False
 
-        window_width  = Consts.window_width
-        window_height = Consts.window_height
-        image_data    = Consts.px_image_data
+        window_width  = self.window_width
+        window_height = self.window_height
+        image_data    = self.px_image_data
 
         # テーマの設定
         sg.theme('SystemDefaultForReal')
@@ -122,8 +127,8 @@ class WindowManager(FunctionService):
 
             # 終了ボタンが押された時はタスクトレイのプロセスも終了してループを抜ける
             if event == 'Shutdown':
-                if self.stop_callback is not None:
-                    self.stop_callback()
+                if self.stop_host_process is not None:
+                    self.stop_host_process()
                 break
         
         # ウィンドウを閉じる
@@ -134,6 +139,6 @@ class WindowManager(FunctionService):
     def add_page(self, page):
         self.layouts.append(page.export())
 
-
+    # WindowManagerを終了する
     def stop(self):
         self.window_refresh = True

@@ -20,13 +20,44 @@ class FileResolver:
             extDataDir = os.getcwd()
             extDataDir = os.path.join(extDataDir, path) 
         return extDataDir
+    
+# バージョンを管理、比較するクラス
+class Version:
+    def __init__(self, major, minor, patch):
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+
+    # バージョンを文字列で取得する
+    def get_version_string(self):
+        return f"{self.major}.{self.minor}.{self.patch}"
+    
+    # バージョンを比較する
+    # self > other: 1
+    # self < other: -1
+    # self == other: 0
+    def compare(self, other):
+        if self.major > other.major:
+            return 1
+        if self.major < other.major:
+            return -1
+        if self.minor > other.minor:
+            return 1
+        if self.minor < other.minor:
+            return -1
+        if self.patch > other.patch:
+            return 1
+        if self.patch < other.patch:
+            return -1
+        return 0
 
 class Consts:
 
     window_width = 400
     window_height = 200
 
-    px_image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc````\x00\x00\x00\x05\x00\x01\xa5\xf6E@\x00\x00\x00\x00IEND\xaeB`\x82'
+    # update_interval = 2 * 60 * 60 # 2 hours
+    update_interval = 10 # 10 seconds
 
     mit_license = """Copyright 2023 aaaa777
 

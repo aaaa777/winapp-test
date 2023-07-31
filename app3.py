@@ -1,4 +1,4 @@
-from lib.core.services import WindowManager, ServiceManager, TaskTray
+from lib.core.services import WindowManager, ServiceManager, TaskTray, UpdateChecker
 from lib.core.utils import FileResolver, Consts
 from lib.core.page import MainPage, TextPage
 
@@ -14,16 +14,18 @@ def main():
     except:
         sys.exit(0)
 
+
     # ServiceManagerの初期化
     sm = ServiceManager()
 
 
-
     # WindowManagerの初期化
     wm = WindowManager(
-
+        window_height=Consts.window_height,
+        window_width=Consts.window_width,
+        
         # WindowManagerの終了処理にServiceManagerの終了処理を追加
-        stop_callback=sm.stop,
+        stop_host_process=sm.stop,
     
         # WindowManagerにページを追加
         pages=[
@@ -42,6 +44,14 @@ def main():
         ],
     )
 
+    
+    # UpdateCheckerの初期化
+    uc = UpdateChecker(
+        version_url="http://www.example.com/",
+        update_message="アップデートがあります。",
+    )
+
+
     # TaskTrayの初期化
     tt = TaskTray(
 
@@ -51,16 +61,17 @@ def main():
         
         # WindowManagerの終了処理にServiceManagerの終了処理を追加
         menu_options={
-            '設定': lambda: wm.create_window_thread(),
+            '設定': wm.create_window_thread,
+            'アップデート': uc.check_update_notification,
             '終了': sm.stop
         },
         default_item="設定",
     )
 
-
     # 停止処理をServiceManagerに登録
     sm.add_service(wm)
     sm.add_service(tt)
+    sm.add_service(uc)
 
     # ServiceManagerを起動、ブロッキング
     sm.run()

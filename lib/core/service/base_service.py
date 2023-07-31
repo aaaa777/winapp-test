@@ -1,9 +1,9 @@
 import threading
 
 class BaseService:
-    def __init__(self, stop_callback=None):
+    def __init__(self, stop_host_process=None):
         
-        self.stop_callback = stop_callback
+        self.stop_host_process = stop_host_process
         self.stop_callbacks = []
         self.thread = threading.Thread(target=self.run_thread)
 
