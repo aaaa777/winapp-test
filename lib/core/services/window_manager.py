@@ -111,8 +111,8 @@ class WindowManager(FunctionService):
             event, values = self.window.read(timeout=1000, timeout_key='window-read-timeout')
             print(event, values)
 
-            # if event == 'window-read-timeout':
-            #     continue
+            if event == 'window-read-timeout':
+                continue
 
             # OKボタンが押された場合はOKを表示
             if event == 'OK':
@@ -180,5 +180,6 @@ class WindowManager(FunctionService):
     # WindowManagerを終了する
     def stop(self):
         print("stopping WindowManager")
-        self.window.write_event_value('window-read-timeout', {"force": True})
         self.window_refresh = True
+        # Python GILのエラーが出てしまうのでself.window_refreshを使ってフラグを立てる
+        # self.window.write_event_value('window-read-timeout', {"force": True})

@@ -29,9 +29,8 @@ class UpdateChecker(BackgroundService):
     # アップデートがあるかどうかを手動でチェックして、結果を通知する
     def check_update_notification(self):
         pass
-        res = toast("アップデートはありませんでした")
-        print("toast message", res)
-
+        threading.Thread(target=lambda: toast("アップデートはありませんでした")).start()
+        
     def check_version(self):
         res = requests.get(self.version_url)
 
