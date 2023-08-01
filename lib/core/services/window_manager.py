@@ -3,25 +3,34 @@ import threading
 import win32gui
 
 from ..service import FunctionService
+from ..page import ManagedPage, NonePage
 
 # 管理ウィンドウの管理クラス
 class WindowManager(FunctionService):
 
     # ウィンドウ初期化
-    def __init__(self, pages=[], window_width=400, window_height=200, **kwargs):
+    def __init__(self, window_width=400, window_height=200, **kwargs):
         super().__init__(**kwargs)
         self.window_width = window_width
         self.window_height = window_height
-        self.layouts = [page.export() for page in pages]
+        self.layouts = []
 
         self.window = None
         self.window_refresh = False
         
         self.px_image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc````\x00\x00\x00\x05\x00\x01\xa5\xf6E@\x00\x00\x00\x00IEND\xaeB`\x82'
+        ManagedPage.manager = self
+
+
+    # ページを追加する
+    def add_page(self, page):
+        self.layouts.append(page.export())
+
 
     # ウィンドウ起動
     def create_window(self):
         return threading.Thread(target=self.create_window_thread).start()
+    
 
     # Thread用ウィンドウ起動
     def create_window_thread(self):
@@ -49,14 +58,15 @@ class WindowManager(FunctionService):
         # ヘッダーの列数調整
         if len(self.layouts) % 4 != 0:
             for i in range(4-(len(self.layouts)%4)):
-                self.layouts.append([None, lambda: []])
+                # self.layouts.append([None, lambda: []])
+                NonePage()
 
         # ヘッダーに⇔ボタンを追加
-        header_layouts = [sg.Button(key=f"-COL-PREV0-", button_text="←", image_data=image_data, image_size=(25, 15), pad=(0, 0), disabled=True)]
+        header_layouts = [sg.Button(key=f"-COL-PREV0-", button_text=" ", image_data=image_data, image_size=(25, 15), pad=(0, 0), disabled=True)]
         for i in range(len(self.layouts)):
             header_layouts.append(sg.Button(button_text=f"{' ' if self.layouts[i][0] is None else self.layouts[i][0]}", key=f'{i}', image_data=image_data, image_size=(80, 15), disabled=self.layouts[i][0] is None, pad=(0, 0), tooltip=self.layouts[i][0]))
             if i % 4 == 3:
-                header_layouts.append(sg.Button(key=f"-COL-NEXT{i//4}-", button_text="→", image_data=image_data, image_size=(25, 15), pad=(0, 0), disabled=(i+1==len(self.layouts))))
+                header_layouts.append(sg.Button(key=f"-COL-NEXT{i//4}-", button_text=" " if i+1==len(self.layouts) else "→", image_data=image_data, image_size=(25, 15), pad=(0, 0), disabled=(i+1==len(self.layouts))))
                 header_layouts.append(sg.Button(key=f"-COL-PREV{(i//4)+1}-", button_text="←", image_data=image_data, image_size=(25, 15), pad=(0, 0)))
         
         del header_layouts[-1]
@@ -141,9 +151,6 @@ class WindowManager(FunctionService):
         self.window.close()
         self.window = None
 
-    # ページを追加する
-    def add_page(self, page):
-        self.layouts.append(page.export())
 
     # WindowManagerを終了する
     def stop(self):
