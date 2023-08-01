@@ -6,9 +6,12 @@ from .utils import FileResolver
 class ModLoader:
     @staticmethod
     def init_mods():
+        mods_path = os.path.join(FileResolver.get_exe_root_path(), "mod")
+
+        if not os.path.exists(mods_path):
+            return
 
         # モジュールのパスを追加する
-        mods_path = os.path.join(FileResolver.get_exe_root_path(), "mod")
         if not mods_path in sys.path:
             sys.path.append(mods_path)
 
