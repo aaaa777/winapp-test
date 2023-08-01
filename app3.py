@@ -1,8 +1,10 @@
-from lib.core.services import WindowManager, ServiceManager, TaskTray, UpdateChecker
 from lib.core.utils import FileResolver, Consts
-from lib.core.page import MainPage, TextPage
+from lib.core.page import TextPage
 from lib.core.version import AppVersion
 from lib.core.modloader import ModLoader
+
+from lib.core.services import WindowManager, ServiceManager, TaskTray, UpdateChecker
+from lib.core.pages import MainPage
 
 import sys
 from tendo import singleton
@@ -33,6 +35,7 @@ def main():
     wm = WindowManager(
         window_height=Consts.window_height,
         window_width=Consts.window_width,
+        page_title_width=Consts.page_title_width,
 
         # WindowManagerの終了処理にServiceManagerの終了処理を追加
         stop_host_process=sm.stop,

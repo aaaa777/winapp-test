@@ -6,7 +6,7 @@ from .utils import FileResolver
 class ModLoader:
     @staticmethod
     def init_mods():
-        mods_path = os.path.join(FileResolver.get_exe_root_path(), "mod")
+        mods_path = os.path.join(FileResolver.get_exe_root_path(), "mods")
 
         if not os.path.exists(mods_path):
             return
@@ -16,7 +16,7 @@ class ModLoader:
             sys.path.append(mods_path)
 
         # モジュールをロードする
-        mods = [f.name for f in os.scandir('mod') if f.is_dir() and f.name.startswith("mod_")]
+        mods = [f.name for f in os.scandir(mods_path) if f.is_dir() and f.name.startswith("mod_")]
         for mod in mods:
             print(f"Loading mod: {mod}")
             __import__(mod)

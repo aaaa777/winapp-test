@@ -17,6 +17,8 @@ class ServiceManager(BackgroundService):
     def add_service(self, service=None):
         if service is None:
             return
+        
+        print("Adding service: {}".format(service))
         self.services.append(service)
         self.add_stop_callback(service.stop)
 
@@ -27,7 +29,6 @@ class ServiceManager(BackgroundService):
 
         # バックグラウンドのサービスを起動
         threads = [threading.Thread(target=service.run) for service in self.services]
-        print(self.services)
         for thread in threads:
             thread.start()
 

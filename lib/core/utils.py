@@ -58,8 +58,11 @@ class Version:
 
 class Consts:
 
+    # ウィンドウのレイアウト設定
     window_width = 400
     window_height = 200
+
+    page_title_width = 80
 
     # update_interval = 2 * 60 * 60 # 2 hours
     update_interval = 10 # 10 seconds
