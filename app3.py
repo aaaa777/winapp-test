@@ -2,6 +2,7 @@ from lib.core.services import WindowManager, ServiceManager, TaskTray, UpdateChe
 from lib.core.utils import FileResolver, Consts
 from lib.core.page import MainPage, TextPage
 from lib.core.version import AppVersion
+from lib.core.modloader import ModLoader
 
 import sys
 from tendo import singleton
@@ -35,23 +36,17 @@ def main():
 
         # WindowManagerの終了処理にServiceManagerの終了処理を追加
         stop_host_process=sm.stop,
-    
-        # WindowManagerにページを追加
-        pages=[
-            TextPage("全般", None, "正常に起動しました。"),
-            TextPage("認証", None, "認証済みです。"),
-            MainPage("メイン"),
-            TextPage("バージョン", "バージョン情報", AppVersion.version.get_version_string()),
-            TextPage("バージョン", "バージョン情報", AppVersion.version.get_version_string()),
-            TextPage("バージョン", "バージョン情報", AppVersion.version.get_version_string()),
-            TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-            TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-            TextPage("バージョン", "バージョン情報", f"バージョン: {AppVersion.version.get_version_string()}"),
-            TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-            TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-            TextPage("ライセンス", "ライセンス情報", Consts.mit_license),
-        ],
     )
+
+    # WindowManagerにページを追加
+    TextPage(title="全般", text="正常に起動しました。"),
+    TextPage(title="認証", text="認証済みです。"),
+    MainPage(title="メイン"),
+    TextPage(title="バージョン", header="バージョン情報", text=f"バージョン: {AppVersion.version.get_version_string()}"),
+    TextPage(title="バージョン", header="バージョン情報", text=AppVersion.version.get_version_string()),
+    TextPage(title="バージョン", header="バージョン情報", text=AppVersion.version.get_version_string()),
+    TextPage(title="ライセンス", header="ライセンス情報", text=Consts.mit_license),
+    TextPage(title="ライセンス", header="ライセンス情報", text=Consts.mit_license),
 
 
     # TaskTrayの初期化
@@ -69,6 +64,11 @@ def main():
         },
         default_item="設定",
     )
+
+
+    # ModLoaderの初期化
+    ModLoader.init_mods()
+
 
     # ServiceManagerを起動、ブロッキング
     sm.run()

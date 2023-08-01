@@ -1,13 +1,13 @@
 from PySimpleGUI import PySimpleGUI as sg
-from lib.core.page import BasePage
+from lib.core.page import ManagedPage
 
-class SampleModPage(BasePage):
+class SampleModPage(ManagedPage):
 
-    layout = [
-        [sg.Text('Sample Mod Window')],
-    ]
-    
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        kwargs['title'] = "MODサンプル"
+        super().__init__(**kwargs)
 
-        self._window = None
+    def layout(self):
+        return [
+            sg.Column([[sg.Text('Sample Mod Window')]], scrollable=True, vertical_scroll_only=True, size=(380, 140), pad=(0, 0)),
+        ]

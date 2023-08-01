@@ -1,4 +1,4 @@
-from lib.core.service import BaseService
+from lib.core.service import ManagedService
 
-class SampleModService(BaseService):
+class SampleModService(ManagedService):
     pass

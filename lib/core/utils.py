@@ -22,8 +22,8 @@ class FileResolver:
         return extDataDir
     
     @staticmethod
-    def resolve_mod_path(path):
-        pass
+    def get_exe_root_path():
+        return os.getcwd()
         
     
 # バージョンを管理、比較するクラス

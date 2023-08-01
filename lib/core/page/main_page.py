@@ -1,11 +1,12 @@
 import PySimpleGUI as sg
-from .base_page import BasePage
+from .managed_page import ManagedPage
 
-class MainPage(BasePage):
+class MainPage(ManagedPage):
     
-    def __init__(self, title="Main Page"):
-        super().__init__()
-        self.title = title
+    def __init__(self, **kwargs):
+        if kwargs.get("title") is None:
+            kwargs["title"] = "Main Page"
+        super().__init__(**kwargs)
 
     def layout(self):
         return [

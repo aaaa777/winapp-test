@@ -1,11 +1,10 @@
 import PySimpleGUI as sg
-from .base_page import BasePage
+from .managed_page import ManagedPage
 
-class TextPage(BasePage):
+class TextPage(ManagedPage):
     
-    def __init__(self, title="Text Page", header=None, text="sample text"):
-        super().__init__()
-        self.title = title
+    def __init__(self, header=None, text="sample text", **kwargs):
+        super().__init__(**kwargs)
         self.header = header
         self.text = text
 
