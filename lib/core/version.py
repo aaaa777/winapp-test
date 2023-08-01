@@ -5,4 +5,4 @@ class AppVersion(Version):
     version_minor = 1
     version_patch = 1
 
-    singleton = Version(version_major, version_minor, version_patch)
+    version = Version(version_major, version_minor, version_patch)

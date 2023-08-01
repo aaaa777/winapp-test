@@ -40,7 +40,7 @@ class AppVersion(Version):
     version_minor = {new_version_minor}
     version_patch = {new_version_patch}
 
-    singleton = Version(version_major, version_minor, version_patch)"""
+    version = Version(version_major, version_minor, version_patch)"""
         )
     
     os.system(f"""git add lib/core/version.py""")
