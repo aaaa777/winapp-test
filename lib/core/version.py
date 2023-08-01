@@ -3,6 +3,6 @@ from .utils import Version
 class AppVersion(Version):
     version_major = 0
     version_minor = 1
-    version_patch = 0
+    version_patch = 1
 
-    version = Version(version_major, version_minor, version_patch)
+    singleton = Version(version_major, version_minor, version_patch)
