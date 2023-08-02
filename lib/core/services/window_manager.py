@@ -92,7 +92,7 @@ class WindowManager(FunctionService):
         ]
 
         # ウィンドウを作成
-        self.window = sg.Window('Window Title', window_layout, size=(window_width, window_height), margins=(0,0), finalize=True)
+        self.window = sg.Window('Window Title', window_layout, size=(window_width, window_height), margins=(0,0), finalize=True, grab_anywhere_using_control=True)
 
         # self.window["COL-topbar"].Widget.vscrollbar.pack_forget()
 
